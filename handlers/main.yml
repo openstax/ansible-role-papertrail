@@ -1,0 +1,30 @@
+---
+- name: install rsyslog papertrail config
+  become: yes
+  template: 
+    src: root/etc/rsyslog.d/90-papertrail.conf.j2
+    dest: /etc/rsyslog.d/90-papertrail.conf
+    owner: "{{ rsyslog_user }}"
+    group: "{{ rsyslog_group }}"
+    mode: 0640
+  listen: rsyslog
+  tags:
+    - papertrail
+    - rsyslog
+    - handler
+
+- name: restart and enable rsyslog service
+  become: yes
+  service:
+    name: rsyslog
+    state: restarted
+    enabled: True
+  listen: rsyslog
+  tags:
+    - rsyslog
+    - handler
+
+# TODO: call Papertrail's HTTP API to register this system as an authorized
+# logger, http://help.papertrailapp.com/kb/how-it-works/http-api/
+# Then, turn off automatically enabling new loggers
+  

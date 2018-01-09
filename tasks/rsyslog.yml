@@ -1,0 +1,30 @@
+---
+- name: install or upgrade rsyslog apt packages
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - rsyslog
+    - rsyslog-gnutls
+
+- name: install main rsyslog config and set permissions
+  become: yes
+  template: 
+    src: root/etc/rsyslog.conf.j2
+    dest: /etc/rsyslog.conf
+    owner: "{{ rsyslog_user }}"
+    group: "{{ rsyslog_group }}"
+    mode: 0640
+  notify: rsyslog
+
+- name: install default rsyslog config and set permissions
+  become: yes
+  template:
+    src: root/etc/rsyslog.d/50-default.conf.j2
+    dest: /etc/rsyslog.d/50-default.conf
+    owner: "{{ rsyslog_user }}"
+    group: "{{ rsyslog_group }}"
+    mode: 0640
+  notify: rsyslog
+  

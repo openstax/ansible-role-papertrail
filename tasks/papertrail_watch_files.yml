@@ -1,0 +1,9 @@
+---
+- name: add logs to paper_trail_watch_files var
+  set_fact:
+    papertrail_watch_files: "{{  papertrail_watch_files }}"
+  changes_when: True
+  notify: rsyslog
+  tags: 
+    - papertrail
+    - config

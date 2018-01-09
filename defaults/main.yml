@@ -1,0 +1,6 @@
+---
+rsyslog_user: root
+rsyslog_group: root
+
+papertrail_cert_bundle_path: "{{ papertrail_ssl_dest_cert_dir }}/papertrail-bundle.pem"
+papertrail_watch_files: []

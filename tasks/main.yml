@@ -1,0 +1,30 @@
+---
+- name: copy certificate bundle and set permissions
+  become: yes
+  copy: 
+    src: root/etc/ssl/certs/papertrail-bundle.pem
+    dest: "{{ papertrail_cert_bundle_path }}"
+    owner: "{{ ssl_user }}"
+    group: "{{ ssl_group }}"
+    mode: 0644
+  tags: 
+    - papertrail
+    - config
+
+- import_tasks: rsyslog.yml
+  tags: 
+    - rsyslog
+    - config
+
+- import_tasks: papertrail_watch_files.yml
+  tags:
+    - rsyslog
+    - config
+  when: papertrail_watch_files
+
+- name: notify rsyslog handlers
+  command: 'true'
+  notify: rsyslog
+  tags:
+    - rsyslog
+    - handler
