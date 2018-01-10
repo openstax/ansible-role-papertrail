@@ -16,12 +16,6 @@
     - rsyslog
     - config
 
-- import_tasks: papertrail_watch_files.yml
-  tags:
-    - rsyslog
-    - config
-  when: papertrail_watch_files
-
 - name: notify rsyslog handlers
   command: 'true'
   notify: rsyslog
